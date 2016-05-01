@@ -1,0 +1,24 @@
+<div>
+    <form method="post" action="<?php echo $form->getAction(); ?>" enctype="multipart/form-data">
+        <?php if (!isset($isEdit)) { ?>
+        <div>
+            <?php echo $form->render('video'); ?>
+        </div>
+        <?php } ?>
+        <div>
+            <?php echo $form->render('name'); ?>
+        </div>
+        <div>
+            <?php echo $form->render('description'); ?>
+        </div>
+        <div>
+            <?php foreach (Tag::find() as $tag) { ?>
+                <span><?php echo $tag->getName(); ?></span>
+            <?php echo $tagForm->render('check_' . $tag->getName());
+            } ?>
+        </div>
+        <div>
+            <?php echo $form->render('submit'); ?>
+        </div>
+    </form>
+</div>

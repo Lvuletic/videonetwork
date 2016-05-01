@@ -96,3 +96,19 @@ $di->setShared('session', function () {
 
     return $session;
 });
+
+$di->setShared('translate', function() use($di) {
+    // = $di->getShared("session");
+    $dispatcher = $di->getShared("dispatcher");
+    $language = $dispatcher->getParam("language");
+    if (!$language)
+    {
+        $dispatcher->setParam("language", "en");
+        //$this->session->set("lang", "en");
+        $language = "en";
+    }
+    require '../app/messages/'.$language.".php";
+    return new Phalcon\Translate\Adapter\NativeArray(array(
+        "content" => $messages
+    ));
+});
