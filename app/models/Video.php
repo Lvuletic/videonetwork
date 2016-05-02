@@ -246,4 +246,9 @@ class Video extends \Phalcon\Mvc\Model
         return 'video';
     }
 
+    public function getTags()
+    {
+        return VideoTag::find("video = '$this->id'");
+    }
+
 }

@@ -32,7 +32,7 @@ class VideoController extends ControllerBase
 
                 if ($video->save() == false) {
                     $this->db->rollback();
-                    return;
+                    return; // todo proper return
 
                 }
 
@@ -59,7 +59,7 @@ class VideoController extends ControllerBase
     }
 
     public function editAction($code) {
-        //todo add user specifics
+        // todo add user specifics
         $video = Video::findFirst($code);
         $form = new VideoForm($video);
 
@@ -73,6 +73,31 @@ class VideoController extends ControllerBase
         $this->view->form = $form;
         $this->view->isEdit = true;
         $this->view->pick('video/video');
+    }
+
+    public function deleteAction($code) {
+        // todo add user specifics
+        $this->db->begin();
+        $video = Video::findFirst($code);
+
+        $tags = $video->getTags();
+        foreach ($tags as $tag) {
+            if ($tag->delete() == false) {
+                $this->db->rollback();
+                return; // todo proper return
+            }
+        }
+
+        // todo add delete comments when they are implemented
+
+        if ($video->delete() == false) {
+            $this->db->rollback();
+            return;
+        }
+
+        $this->db->commit();
+
+        $this->view->pick('video/index'); // todo flash message & proper return
     }
 
 }
