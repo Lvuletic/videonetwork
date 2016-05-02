@@ -93,6 +93,8 @@ class VideoController extends ControllerBase
         if ($video->delete() == false) {
             $this->db->rollback();
             return;
+        } else {
+            unlink(APP_PATH . '/public/video/' . $video->getPath());
         }
 
         $this->db->commit();

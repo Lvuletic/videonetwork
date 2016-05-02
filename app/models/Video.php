@@ -31,7 +31,7 @@ class Video extends \Phalcon\Mvc\Model
      *
      * @var integer
      */
-    protected $views;
+    protected $views = 0;
 
     /**
      *
