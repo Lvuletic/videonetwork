@@ -1,6 +1,6 @@
 /phalcon-devtools
 .idea/
-/app/cache
+/app/cache/
 /public/video
 /public/temp
 /vendor
