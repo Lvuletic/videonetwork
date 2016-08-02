@@ -1,0 +1,20 @@
+<nav class="navbar navbar-default">
+    <ul class="nav navbar-nav"></ul>
+    <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+            <?php if ($this->session->get('user_id')) { ?>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">
+                    <?php echo $this->session->get('username') ?>
+                    <span class="caret"></span></a>
+                    <?php } else {
+                echo $this->tag->linkTo(array(array('for' => 'login', 'language' => $this->dispatcher->getParam('language')), $t->_('loginLink')));
+            } ?>
+            <ul class="dropdown-menu" role="menu">
+                <li> <?php echo $this->tag->linkTo(array(array('for' => 'account', 'language' => $this->dispatcher->getParam('language')), $t->_('yourAccount'))) ?> </li>
+                <li class="divider">
+                    <?php echo $this->tag->linkTo(array(array('for' => 'logout', 'language' => $this->dispatcher->getParam('language')), $t->_('logoutLink'))) ?>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</nav>

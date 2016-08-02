@@ -3,6 +3,7 @@
 use Phalcon\Forms\Form;
 use Phalcon\Forms\Element\Text;
 use Phalcon\Forms\Element\Submit;
+use Phalcon\Validation\Validator\PresenceOf;
 
 
 class TagForm extends Form
@@ -14,10 +15,10 @@ class TagForm extends Form
 
         // todo
         $name = new Text('name');
-       // $name->setLabel($this->translate->_("tagName"));
-        /*$name->addValidator(new PresenceOf(array(
+        $name->setLabel($this->translate->_("tagName"));
+        $name->addValidator(new PresenceOf(array(
             'message' => 'Tag name is required'
-        )));*/
+        )));
         $this->add($name);
 
         $button = new Submit('submit');

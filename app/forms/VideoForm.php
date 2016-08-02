@@ -5,6 +5,7 @@ use Phalcon\Forms\Element\File;
 use Phalcon\Forms\Element\Text;
 use Phalcon\Forms\Element\TextArea;
 use Phalcon\Forms\Element\Submit;
+use Phalcon\Validation\Validator\PresenceOf;
 
 
 class VideoForm extends Form
@@ -19,14 +20,14 @@ class VideoForm extends Form
 
         // todo
         $name = new Text('name');
-       // $name->setLabel($this->translate->_("videoName"));
-        /*$name->addValidator(new PresenceOf(array(
-            'message' => 'Video name is required'
-        )));*/
+        $name->setLabel($this->translate->_('videoName'));
+        $name->addValidator(new PresenceOf(array(
+            'message' => $this->translate->_('videoNameRequired')
+        )));
         $this->add($name);
 
         $description = new TextArea('description');
-       // $description->setLabel($this->translate->_("videoDescription"));
+        $description->setLabel($this->translate->_('videoDescription'));
         $this->add($description);
 
         $button = new Submit('submit');

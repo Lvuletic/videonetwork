@@ -45,6 +45,10 @@ class Video extends \Phalcon\Mvc\Model
      */
     protected $owner;
 
+    public function beforeSave() {
+        $this->setUploadDate(time());
+    }
+
     /**
      * Method to set the value of field id
      *
@@ -249,6 +253,11 @@ class Video extends \Phalcon\Mvc\Model
     public function getTags()
     {
         return VideoTag::find("video = '$this->id'");
+    }
+
+    public function getFullPath()
+    {
+
     }
 
 }

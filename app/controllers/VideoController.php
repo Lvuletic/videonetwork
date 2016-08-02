@@ -1,5 +1,7 @@
 <?php
 
+use Elasticsearch\ClientBuilder;
+
 class VideoController extends ControllerBase
 {
     public function initialize() {
@@ -14,20 +16,30 @@ class VideoController extends ControllerBase
         $form = new VideoForm();
         $tagForm = new VideoTagForm();
 
+
         if ($this->request->isPost() && $this->request->hasFiles()) {
-            $videoDir = APP_PATH . '/public/video/';
+
+            if (!$form->isValid($this->request->getPost())) { // todo error msg how exactly
+                foreach ($form->getMessages() as $d);
+                echo $d, '<br>';
+            }
+
+            $videoMP4Dir = APP_PATH . '/public/video/mp4/';
+            $videowebmDir = APP_PATH . '/public/video/webm/';
 
             $this->db->begin();
             foreach ($this->request->getUploadedFiles() as $videoFile) {
                 $video = new Video();
                 echo $videoFile->getName()," ", $videoFile->getSize(),"\n";
-                $videoFileName = md5(uniqid()) . '.' . $videoFile->getExtension();
-                $videoFile->moveTo($videoDir . $videoFileName);
+                $videoFileName = md5(uniqid());
+                $videoFile->moveTo($videowebmDir . $videoFileName . '.' . $videoFile->getExtension());
 
                 $video->setName($this->request->getPost('name'));
                 $video->setDescription($this->request->getPost('description'));
                 $video->setUploadDate(time());
                 $video->setPath($videoFileName);
+
+
                 $video->setOwner(1); // todo set proper user
 
                 if ($video->save() == false) {
@@ -100,6 +112,11 @@ class VideoController extends ControllerBase
         $this->db->commit();
 
         $this->view->pick('video/index'); // todo flash message & proper return
+    }
+
+    public function showAction($code) {
+        $video = Video::findFirst($code);
+        $this->view->video = $video;
     }
 
 }
