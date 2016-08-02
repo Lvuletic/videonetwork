@@ -1,0 +1,17 @@
+{
+  "require":
+  {
+    "phpclasses/phpvideotoolkit": ">=2.1.4",
+    "elasticsearch/elasticsearch": "~2.0"
+  },
+  "repositories":
+  [
+    {
+      "type": "composer",
+      "url": "https:\/\/www.phpclasses.org\/"
+    },
+    {
+      "packagist": false
+    }
+  ]
+}

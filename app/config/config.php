@@ -21,6 +21,6 @@ return new \Phalcon\Config(array(
         'cacheDir'       => APP_PATH . '/app/cache/',
         'formsDir'       => APP_PATH . '/app/forms',
         'messagesDir'    => APP_PATH . '/app/messages/',
-        'baseUri'        => '/videonetwork/',
+        'baseUri'        => '/',
     )
 ));

@@ -2,3 +2,5 @@
 .idea/
 /app/cache
 /public/video
+/public/temp
+/vendor

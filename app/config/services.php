@@ -97,18 +97,22 @@ $di->setShared('session', function () {
     return $session;
 });
 
-$di->setShared('translate', function() use($di) {
+$di->setShared('translate', function() use($di) { //todo check
     // = $di->getShared("session");
-    $dispatcher = $di->getShared("dispatcher");
-    $language = $dispatcher->getParam("language");
+    $dispatcher = $di->getShared('dispatcher');
+    $language = $dispatcher->getParam('language');
     if (!$language)
     {
-        $dispatcher->setParam("language", "en");
+        $dispatcher->setParam('language', 'en');
         //$this->session->set("lang", "en");
-        $language = "en";
+        $language = 'en';
     }
-    require '../app/messages/'.$language.".php";
+    require '../app/messages/' . $language . '.php';
     return new Phalcon\Translate\Adapter\NativeArray(array(
-        "content" => $messages
+        'content' => $messages
     ));
+});
+
+$di->set('router', function() use ($config){
+    return require APP_PATH . '/app/config/routes.php';
 });
