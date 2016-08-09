@@ -19,12 +19,12 @@ class VideoForm extends Form
         $this->add($file);
 
         // todo
-        $name = new Text('name');
-        $name->setLabel($this->translate->_('videoName'));
-        $name->addValidator(new PresenceOf(array(
-            'message' => $this->translate->_('videoNameRequired')
+        $title = new Text('title');
+        $title->setLabel($this->translate->_('videoTitle'));
+        $title->addValidator(new PresenceOf(array(
+            'message' => $this->translate->_('videoTitleRequired')
         )));
-        $this->add($name);
+        $this->add($title);
 
         $description = new TextArea('description');
         $description->setLabel($this->translate->_('videoDescription'));

@@ -16,36 +16,35 @@ class VideoController extends ControllerBase
         $form = new VideoForm();
         $tagForm = new VideoTagForm();
 
-
         if ($this->request->isPost() && $this->request->hasFiles()) {
 
             if (!$form->isValid($this->request->getPost())) { // todo error msg how exactly
-                foreach ($form->getMessages() as $d);
-                echo $d, '<br>';
+                foreach ($form->getMessages() as $message);
+                echo $message, '<br>';
             }
-
-            $videoMP4Dir = APP_PATH . '/public/video/mp4/';
-            $videowebmDir = APP_PATH . '/public/video/webm/';
 
             $this->db->begin();
             foreach ($this->request->getUploadedFiles() as $videoFile) {
                 $video = new Video();
-                echo $videoFile->getName()," ", $videoFile->getSize(),"\n";
                 $videoFileName = md5(uniqid());
-                $videoFile->moveTo($videowebmDir . $videoFileName . '.' . $videoFile->getExtension());
 
-                $video->setName($this->request->getPost('name'));
+                foreach (Video::$formats as $format) {
+                    $videoToolkit = new \PHPVideoToolkit\Video($videoFile->getTempName());
+                    $toolkitFormat = '\PHPVideoToolkit\VideoFormat_' . $format;
+                    $videoFormat = new $toolkitFormat('output');
+                    $videoToolkit->save(APP_PATH . Video::PATH . $format .'/'. $videoFileName . '.' . $format, $videoFormat);
+                }
+
+                $video->setTitle($this->request->getPost('name'));
                 $video->setDescription($this->request->getPost('description'));
                 $video->setUploadDate(time());
                 $video->setPath($videoFileName);
-
 
                 $video->setOwner(1); // todo set proper user
 
                 if ($video->save() == false) {
                     $this->db->rollback();
                     return; // todo proper return
-
                 }
 
                 foreach (Tag::find() as $tag) {

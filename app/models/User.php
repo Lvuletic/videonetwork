@@ -3,7 +3,7 @@
 use Phalcon\Mvc\Model\Validator\Email as Email;
 
 class User extends \Phalcon\Mvc\Model
-{
+{ // todo add activation reset key?
 
     /**
      *

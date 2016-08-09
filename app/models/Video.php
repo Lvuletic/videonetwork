@@ -13,7 +13,7 @@ class Video extends \Phalcon\Mvc\Model
      *
      * @var string
      */
-    protected $name;
+    protected $title;
 
     /**
      *
@@ -45,6 +45,10 @@ class Video extends \Phalcon\Mvc\Model
      */
     protected $owner;
 
+    const PATH = '/public/video/';
+
+    static $formats = array('mp4','webm','ogg');
+
     public function beforeSave() {
         $this->setUploadDate(time());
     }
@@ -63,14 +67,14 @@ class Video extends \Phalcon\Mvc\Model
     }
 
     /**
-     * Method to set the value of field name
+     * Method to set the value of field title
      *
-     * @param string $name
+     * @param string $title
      * @return $this
      */
-    public function setName($name)
+    public function setTitle($title)
     {
-        $this->name = $name;
+        $this->title = $title;
 
         return $this;
     }
@@ -151,13 +155,13 @@ class Video extends \Phalcon\Mvc\Model
     }
 
     /**
-     * Returns the value of field name
+     * Returns the value of field title
      *
      * @return string
      */
-    public function getName()
+    public function getTitle()
     {
-        return $this->name;
+        return $this->title;
     }
 
     /**
@@ -253,11 +257,6 @@ class Video extends \Phalcon\Mvc\Model
     public function getTags()
     {
         return VideoTag::find("video = '$this->id'");
-    }
-
-    public function getFullPath()
-    {
-
     }
 
 }

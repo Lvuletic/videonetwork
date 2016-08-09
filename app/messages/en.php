@@ -1,7 +1,7 @@
 <?php
 
 $messages = array(
-    'videoName' => 'Video name',
+    'videoTitle' => 'Video name',
     'videoDescription' => 'Video description',
     'username' => 'Username',
     'password' => 'Password',
@@ -11,7 +11,7 @@ $messages = array(
     'logoutLink' => 'Log out',
     'yourAccount' => 'Your account',
     'loginLink' => 'Login',
-    'videoNameRequired' => 'Video name is required',
+    'videoTitleRequired' => 'Video name is required',
     'tagNameRequired' => 'Tag name is required',
     'tagName' => 'Tag name',
 

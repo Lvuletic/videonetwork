@@ -21,6 +21,8 @@ try {
      */
     include APP_PATH . "/app/config/services.php";
 
+    include APP_PATH . "/vendor/autoload.php";
+
     /**
      * Handle the request
      */
