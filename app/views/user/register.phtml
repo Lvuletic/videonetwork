@@ -1,0 +1,23 @@
+<div>
+    <form method="post" action="<?php echo $form->getAction(); ?>" enctype="multipart/form-data">
+        <div>
+            <?php echo $form->label('username'); ?>
+            <?php echo $form->render('username'); ?>
+        </div>
+        <div>
+            <?php echo $form->label('password'); ?>
+            <?php echo $form->render('password'); ?>
+        </div>
+        <div>
+            <?php echo $form->label('passwordRepeat'); ?>
+            <?php echo $form->render('passwordRepeat'); ?>
+        </div>
+        <div>
+            <?php echo $form->label('email'); ?>
+            <?php echo $form->render('email'); ?>
+        </div>
+        <div>
+            <?php echo $form->render('submit'); ?>
+        </div>
+    </form>
+</div>

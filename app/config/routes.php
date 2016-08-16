@@ -35,4 +35,9 @@ $router->add('/{language:[a-z]{2}+}/logout', array(
     'action' => 'logout'
 ))->setName('logout');
 
+$router->add('/{language:[a-z]{2}+}/register', array(
+    'controller' => 'user',
+    'action' => 'register'
+))->setName('register');
+
 return $router;

@@ -9,7 +9,7 @@ class VideoController extends ControllerBase
     }
 
     public function indexAction() {
-
+        
     }
 
     public function uploadAction() {
@@ -18,7 +18,7 @@ class VideoController extends ControllerBase
 
         if ($this->request->isPost() && $this->request->hasFiles()) {
 
-            if (!$form->isValid($this->request->getPost())) { // todo error msg how exactly
+            if (!$form->isValid($this->request->getPost())) { // todo proper error msg
                 foreach ($form->getMessages() as $message);
                 echo $message, '<br>';
             }
@@ -35,9 +35,8 @@ class VideoController extends ControllerBase
                     $videoToolkit->save(APP_PATH . Video::PATH . $format .'/'. $videoFileName . '.' . $format, $videoFormat);
                 }
 
-                $video->setTitle($this->request->getPost('name'));
+                $video->setTitle($this->request->getPost('title'));
                 $video->setDescription($this->request->getPost('description'));
-                $video->setUploadDate(time());
                 $video->setPath($videoFileName);
 
                 $video->setOwner(1); // todo set proper user

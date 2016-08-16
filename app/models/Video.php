@@ -1,5 +1,7 @@
 <?php
 
+use Elasticsearch\ClientBuilder;
+
 class Video extends \Phalcon\Mvc\Model
 {
 
@@ -49,8 +51,24 @@ class Video extends \Phalcon\Mvc\Model
 
     static $formats = array('mp4','webm','ogg');
 
-    public function beforeSave() {
+    public function afterSave() {  //before save ili after save? odluciti jos sto s ID
         $this->setUploadDate(time());
+
+        $client = ClientBuilder::create()->build();
+
+        $params = [
+            'index' => 'video',
+            'type' => 'video',
+            'id' => $this->id,
+            'body' => [
+                'title' => $this->title,
+                'description' => $this->description,
+                'upload_date' => $this->upload_date,
+                'views' => $this->views,
+            ]
+        ];
+
+        $client->index($params);
     }
 
     /**

@@ -1,5 +1,9 @@
-<div>hghg
+<div>
+    <p><?php echo $video->getTitle(); ?></p>
     <video width="500" height="400" controls>
         <source src="/video/webm/<?php echo $video->getPath(); ?>" type="video/webm">
+        <source src="/video/mp4/<?php echo $video->getPath(); ?>" type="video/mp4">
+        <source src="/video/ogg/<?php echo $video->getPath(); ?>" type="video/ogg">
     </video>
+    <p><?php echo $video->getDescription(); ?></p>
 </div>
