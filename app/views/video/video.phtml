@@ -1,25 +1,25 @@
 <div>
-    <form method="post" action="<?php echo $form->getAction(); ?>" enctype="multipart/form-data">
+    <form method="post" action="<?php echo $videoForm->getAction(); ?>" enctype="multipart/form-data">
         <?php if (!isset($isEdit)) { ?>
         <div>
-            <?php echo $form->render('video'); ?>
+            <?php echo $videoForm->render('video'); ?>
         </div>
         <?php } ?>
         <div>
-            <?php echo $form->label('title'); ?>
-            <?php echo $form->render('title'); ?>
+            <?php echo $videoForm->label('title'); ?>
+            <?php echo $videoForm->render('title'); ?>
         </div>
         <div>
-            <?php echo $form->render('description'); ?>
+            <?php echo $videoForm->render('description'); ?>
         </div>
         <div>
-            <?php foreach (Tag::find() as $tag) { ?>
-                <span><?php echo $tag->getName(); ?></span>
-            <?php echo $tagForm->render('check_' . $tag->getName());
+            <?php foreach ($tagForm->getElements() as $tag) {
+                echo $tag->label($tag->getName());
+                echo $tag->render($tag->getName());
             } ?>
         </div>
         <div>
-            <?php echo $form->render('submit'); ?>
+            <?php echo $videoForm->render('submit'); ?>
         </div>
     </form>
 </div>
