@@ -7,6 +7,16 @@ class ControllerBase extends Controller
 {
     public function initialize() {
 
+        $this->assets
+            ->addJs('js/bootstrap.min.js')
+            ->addJs('js/npm.js');
+        $this->assets
+            ->addCss('css/bootstrap.min.css')
+            ->addCss('css/bootstrap.min.css.map')
+            ->addCss('css/bootstrap-theme.min.css')
+            ->addCss('css/bootstrap-theme.min.css.map')
+            ->addCss('css/frontpage.css');
+
         $this->loadTranslation();
         $this->tag->setDoctype(\Phalcon\Tag::HTML5);
 

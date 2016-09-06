@@ -1,7 +1,45 @@
-<div class="page-header">
-    <h1>Congratulations!</h1>
+<div>
+    <form method="post" action="<?php echo $searchForm->getAction(); ?>">
+        <div>
+            <?php echo $searchForm->render('search', array('placeholder' => $t->_('search'))); ?>
+            <?php echo $searchForm->render('submit'); ?>
+        </div>
+        <div>
+            <?php foreach ($tagForm->getElements() as $tag) {
+                echo $tag->label($tag->getName());
+                echo $tag->render($tag->getName());
+            } ?>
+        </div>
+    </form>
 </div>
 
-<p>You're now flying with Phalcon. Great things are about to happen!</p>
+<div class="popular">
+    <div class="title">
+        <h2><?php echo $t->_('popular'); ?></h2>
+    </div>
 
-<p>This page is located at <code>views/index/index.volt</code></p>
+
+    <div class="container">
+        <?php foreach ($allVideos as $video) { ?>
+            <div class="video-small col-md-2 col-sm-3">
+                <div class="thumbnail">
+                    <a href="<?php echo $this->url->get(
+                        array('for' => 'video-watch',
+                            'language' => $this->dispatcher->getParam('language'),
+                            'params' => $video->getId())) ?>"
+                        >
+                        <?php echo $this->tag->image(array('src' => $video->getThumbnail(), 'class' => 'thumbnail-image')) ?>
+                        <span class="video-time"><?php echo $video->formatDuration(); ?></span>
+                    </a>
+
+                </div>
+                <div class="thumb-content">
+                    <div><?php echo $video->getTitle(); ?></div>
+                    <div><?php echo $video->getOwner(); ?></div>
+                    <div><?php echo $video->getViews(); ?></div>
+                </div>
+
+            </div>
+        <?php } ?>
+    </div>
+</div>

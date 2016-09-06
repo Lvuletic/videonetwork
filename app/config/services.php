@@ -116,3 +116,7 @@ $di->setShared('translate', function() use($di) { //todo check
 $di->set('router', function() use ($config){
     return require APP_PATH . '/app/config/routes.php';
 });
+
+$di->set('dispatcher', function() {
+    return new Phalcon\Mvc\Dispatcher();
+}, true);

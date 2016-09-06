@@ -5,6 +5,11 @@ use Elasticsearch\ClientBuilder;
 class Video extends \Phalcon\Mvc\Model
 {
 
+    const PATH = '/public/video/';
+    const THUMBNAIL = '/img/thumbnail/';
+
+    static $formats = array('mp4','webm','ogg');
+
     /**
      *
      * @var integer
@@ -47,29 +52,11 @@ class Video extends \Phalcon\Mvc\Model
      */
     protected $owner;
 
-    const PATH = '/public/video/';
-
-    static $formats = array('mp4','webm','ogg');
-
-    public function afterSave() {  //before save ili after save? odluciti jos sto s ID
-        $this->setUploadDate(time());
-
-        $client = ClientBuilder::create()->build();
-
-        $params = [
-            'index' => 'video',
-            'type' => 'video',
-            'id' => $this->id,
-            'body' => [
-                'title' => $this->title,
-                'description' => $this->description,
-                'upload_date' => $this->upload_date,
-                'views' => $this->views,
-            ]
-        ];
-
-        $client->index($params);
-    }
+    /**
+     *
+     * @var integer
+     */
+    protected $duration;
 
     /**
      * Method to set the value of field id
@@ -163,6 +150,19 @@ class Video extends \Phalcon\Mvc\Model
     }
 
     /**
+     * Method to set the value of field duration
+     *
+     * @param integer $duration
+     * @return $this
+     */
+    public function setDuration($duration)
+    {
+        $this->duration = $duration;
+
+        return $this;
+    }
+
+    /**
      * Returns the value of field id
      *
      * @return integer
@@ -233,6 +233,50 @@ class Video extends \Phalcon\Mvc\Model
     }
 
     /**
+     * Returns the value of field duration
+     *
+     * @return integer
+     */
+    public function getDuration()
+    {
+        return $this->duration;
+    }
+
+
+    public function beforeSave() {
+        $this->setUploadDate(time());
+    }
+
+
+    public function afterSave() {  //before save ili after save? odluciti jos sto s ID
+        $client = ClientBuilder::create()->build();
+
+        $tags = array();
+        foreach ($this->videoTag as $videoTag) {
+            $tags[] = $videoTag->tag->getName();
+        }
+
+        $params = [
+            'index' => 'video',
+            'type' => 'video',
+            'id' => $this->id,
+            'body' => [
+                'title' => $this->title,
+                'description' => $this->description,
+                'upload_date' => $this->upload_date,
+                'views' => $this->views,
+                'tags' => $tags
+            ]
+        ];
+
+        $client->index($params);
+    }
+
+    public function getThumbnail() {
+        return self::THUMBNAIL . $this->path;
+    }
+
+    /**
      * Initialize method for model.
      */
     public function initialize()
@@ -262,6 +306,12 @@ class Video extends \Phalcon\Mvc\Model
         return parent::findFirst($parameters);
     }
 
+
+    public function getTags()
+    {
+        return VideoTag::find("video = '$this->id'");
+    }
+
     /**
      * Returns table name mapped in the model.
      *
@@ -272,9 +322,13 @@ class Video extends \Phalcon\Mvc\Model
         return 'video';
     }
 
-    public function getTags()
-    {
-        return VideoTag::find("video = '$this->id'");
+    public function formatDuration() {
+        $minutes = $this->duration / 60;
+        $seconds = $this->duration % 60;
+        return (int) $minutes . ':' . $seconds;
+    }
+
+    public function generateRoute() {
     }
 
 }

@@ -1,5 +1,9 @@
 <nav class="navbar navbar-default">
-    <ul class="nav navbar-nav"></ul>
+    <ul class="nav navbar-nav">
+        <li>
+            <?php echo $this->tag->linkTo(array(array('for' => 'frontPage', 'language' => $this->dispatcher->getParam('language')), $t->_('home'))); ?>
+        </li>
+    </ul>
     <ul class="nav navbar-nav navbar-right">
         <li><?php echo $this->tag->linkTo(array(array('for' => 'register', 'language' => $this->dispatcher->getParam('language')), $t->_('registerLink')));?></li>
         <li class="dropdown">

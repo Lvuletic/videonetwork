@@ -1,6 +1,8 @@
 <?php
 
 use Elasticsearch\ClientBuilder;
+use \PHPVideoToolkit\Timecode as Timecode;
+
 
 class VideoController extends ControllerBase
 {
@@ -9,29 +11,12 @@ class VideoController extends ControllerBase
     }
 
     public function indexAction() {
-        $client = ClientBuilder::create()->build();
-        $params = [
-            'index' => 'video',
-            'type' => 'video',
-            'body' => [
-                'query' => [
-                    'match' => [
-                        'title' => 'trebat'
-                    ]
-                ],
-            ]
-        ];
-
-        $response = $client->search($params);
-        foreach ($response as $r) {
-            echo '<pre>';
-            var_dump($r);
-        }
-
+      
 
     }
 
     public function uploadAction() {
+
         $videoForm = new VideoForm();
         $tagForm = new VideoTagForm();
 
@@ -46,19 +31,25 @@ class VideoController extends ControllerBase
                 $video = new Video();
                 $videoFileName = md5(uniqid());
 
-               /* foreach (Video::$formats as $format) {
+                $duration = null;
+                foreach (Video::$formats as $format) {
                     $videoToolkit = new \PHPVideoToolkit\Video($videoFile->getTempName());
+                    if (!$duration)
+                        $duration = $videoToolkit->getEstimatedFinalDuration()->total_seconds;
+
                     $toolkitFormat = '\PHPVideoToolkit\VideoFormat_' . $format;
                     $videoFormat = new $toolkitFormat('output');
                     $videoToolkit->save(APP_PATH . Video::PATH . $format .'/'. $videoFileName . '.' . $format, $videoFormat);
-                }*/
+                }
+
+                $videoToolkit = new \PHPVideoToolkit\Video($videoFile->getTempName());
+                $videoToolkit->extractFrame(new Timecode($duration/2))->save(APP_PATH . VIDEO::THUMBNAIL . $videoFileName . '.jpg');
 
                 $video->setTitle($this->request->getPost('title'));
                 $video->setDescription($this->request->getPost('description'));
                 $video->setPath($videoFileName);
-
+                $video->setDuration($duration);
                 $video->setOwner(1); // todo set proper user
-
 
                 $videoTags = array();
                 foreach ($this->request->getPost('tags') as $tag) {
@@ -125,10 +116,10 @@ class VideoController extends ControllerBase
 
         $this->db->commit();
 
-        $this->view->pick('video/index'); // todo flash message & proper returnluk
+        $this->view->pick('video/index'); // todo flash message & proper return
     }
 
-    public function showAction($code) {
+    public function watchAction($code) {
         $video = Video::findFirst($code);
         $this->view->video = $video;
     }
